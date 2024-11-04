@@ -64,7 +64,7 @@ export default function RoastRoom() {
             <div className="bg-white text-[#0d0e1b] p-8 rounded-lg shadow-lg w-full max-w-md">
               <h2 className="text-2xl font-bold mb-4">Consent Form</h2>
               <p className="mb-4">
-                Welcome to LinkBurn! Before we proceed, please understand that this site is meant for entertainment purposes only. The roasts generated are not to be taken seriously or personally. By clicking &apos;I Agree&apos;, you acknowledge that:
+                Welcome to LinkBurn!! Before we proceed, please understand that this site is meant for entertainment purposes only. The roasts generated are not to be taken seriously or personally. By clicking &apos;I Agree&apos;, you acknowledge that:
               </p>
               <ul className="list-disc pl-5 mb-6">
                 <li>The content is purely for fun and humor</li>
