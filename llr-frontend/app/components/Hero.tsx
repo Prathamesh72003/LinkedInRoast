@@ -3,16 +3,27 @@
 import { Button } from "@/components/ui/button"
 import { motion } from "framer-motion"
 import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
 
 export default function Hero() {
+  const router = useRouter()
+  const [dotPositions, setDotPositions] = useState<{ top: string; left: string }[]>([])
 
-    const router = useRouter()
+  useEffect(() => {
+    const positions = [...Array(10)].map(() => ({
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+    }))
+    setDotPositions(positions)
+  }, [])
 
-    const handleGetRoasted = () => {
-        router.push('/roastroom')
-    }
+  const handleGetRoasted = () => {
+    router.push('/roastroom')
+  }
+
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#1a1b2e] to-[#0d0e1b] overflow-hidden p-10">
+      {/* Background animated circles */}
       <div className="absolute inset-0">
         {[...Array(3)].map((_, i) => (
           <motion.div
@@ -41,7 +52,7 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 pt-32 pb-20">
         <div className="max-w-3xl">
-          <motion.h1 
+          <motion.h1
             className="text-5xl md:text-5xl font-bold text-white mb-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -51,14 +62,14 @@ export default function Hero() {
             <br />
             Not so friendly AI Roasting Platform
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             className="text-xl text-[#4ECDC4] mb-8"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Get humbled by AI analyzing your LinkedIn profile. 
+            Get humbled by AI analyzing your LinkedIn profile.
             Join thousands of professionals embracing brutal honesty with a touch of humor.
           </motion.p>
 
@@ -67,10 +78,10 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-[#4ECDC4] hover:bg-[#3DBDB3] text-[#0d0e1b] font-bold px-8 py-3 text-lg rounded-full"
-              onClick={() => handleGetRoasted()}
+              onClick={handleGetRoasted}
             >
               Get Roasted
             </Button>
@@ -79,14 +90,11 @@ export default function Hero() {
       </div>
 
       {/* Decorative dots */}
-      {[...Array(10)].map((_, i) => (
+      {dotPositions.map((pos, i) => (
         <motion.div
           key={`dot-${i}`}
           className="absolute w-2 h-2 bg-[#4ECDC4] rounded-full"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-          }}
+          style={pos}
           animate={{
             scale: [1, 1.5, 1],
             opacity: [0.3, 0.7, 0.3],
