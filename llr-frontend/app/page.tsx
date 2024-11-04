@@ -1,7 +1,7 @@
-import LandingScreen from "@/components/LandingScreen";
+import Hero from "./components/Hero";
 
-export default function MainPage(){
-    return (
-        <LandingScreen />
+export default function Home(){
+    return(
+        <Hero />
     )
 }

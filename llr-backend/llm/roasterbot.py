@@ -12,19 +12,24 @@ client = Groq(api_key=GROQ_API_KEY)
 def send_to_llm(formatted_data):
     prompt = f"""Prepare the most brutal roast you can muster based on the profile data I am about to provide. This is all in good fun as part of a self-awareness exercise, so I want you to hold nothing back.
 
-    Go all out! **No mercy, no holds barred, and absolutely no respect.** I am m looking for the harshest and most entertaining roasts you can come up with.
+    Go all out! **No mercy, no holds barred, and absolutely no respect.** I am m looking for the harshest and most entertaining, sarcastic roasts you can come up with.
 
     Don't worry about being too harsh or crossing any lines; I can take it. The more savage, the better! I want to laugh, cringe, and feel completely humbled by what you come up with.
-
-    Let your creativity run wild and deliver the most savage, hilarious, and downright mean-spirited roast imaginable. I can't wait to see what you create!
-
+    
+    The roast should be savage, sarcastic, and should include elements of popular Indian memes and sarcasm from 2023 and 2024 for added humor. 
+    
     Here is the profile data for your reference: 
     
     {json.dumps(formatted_data, indent=2)}
 
-    Start the roast directly dont start of with saying anything like here is the roast this is the hardest roast or anything like this. Just start the roast directly.
+    Start the roast directly ( NO PREAMBLE ) i repeat NO PREAMBLE.
+    Also keep the roast big detailed and brutal plus funny
 
-    Also keep the roast big detailed and brutal plus funny.
+    ADD SOME INDIAN FLAVOURS TO IT IN MIDDLE WHEREVER IT WILL BURST THE LAUGHING BOMB
+
+    **REMEMBER BE THE MOST BRUTUAL EVEN IF IT HURTS BUT IN SARCASTIC WAY**
+
+    START EVERY ROAST WITH: Well well well: 
 
     """
 

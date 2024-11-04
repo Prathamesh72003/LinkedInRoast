@@ -8,6 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from config.config import API_ENDPOINT, HEADERS
 
 def get_linkedin_profile(linkedin_url):
+
     params = {
         'linkedin_profile_url': linkedin_url,
         'extra': 'include',
