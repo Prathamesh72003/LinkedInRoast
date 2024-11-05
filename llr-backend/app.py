@@ -17,17 +17,19 @@ app.add_middleware(
 
 class LinkedInProfileRequest(BaseModel):
     linkedin_url: str
+    brutality_level: int
 
 @app.post('/roast')
 async def get_profile(request: LinkedInProfileRequest):
     linkedin_url = request.linkedin_url
+    brutality_level = request.brutality_level
 
     formatted_profile = get_linkedin_profile(linkedin_url)
 
     if "error" in formatted_profile:
         raise HTTPException(status_code=500, detail=formatted_profile["error"])
 
-    roast_response = send_to_llm(formatted_profile)
+    roast_response = send_to_llm(formatted_profile, brutality_level)
 
     return {"roast": roast_response}
 
