@@ -29,7 +29,7 @@ export default function RoastRoom() {
     setRoastResponse('')
 
     try {
-      const response = await fetch('https://linkedinroast-production.up.railway.app:8000/roast', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/roast`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
