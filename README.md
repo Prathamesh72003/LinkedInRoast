@@ -7,12 +7,19 @@
 
 LinkBurn is a roasting app that generates humorous critiques of LinkedIn profiles using AI. It's built with a Python backend for profile scraping and roast generation, and a Next.js frontend for a sleek user interface.
 
+![LinkBurn Hero](https://i.ibb.co/pLHP4X1/image.png?height=400&width=800)
+
 ## 🌟 Features
 
 - LinkedIn profile scraping
 - AI-powered roast generation using Groq's Llama 3.2 90B model
 - Customizable roast intensity
 - Modern, responsive UI with animations
+
+## 📸 Screenshots
+
+### Roast Generation
+![Roast Generation](https://i.ibb.co/KD8Cjh8/image.png?height=300&width=600)
 
 ## 🚀 Getting Started
 
@@ -68,6 +75,8 @@ LinkBurn is a roasting app that generates humorous critiques of LinkedIn profile
 1. Open your browser and go to `http://localhost:3000`
 2. Enter a LinkedIn profile URL and select the roast intensity
 3. Click "Roast" and enjoy the AI-generated critique!
+
+![Usage Demo](https://i.ibb.co/943Cg9W/image.png?height=400&width=800)
 
 ## 🛠️ Technologies Used
 
