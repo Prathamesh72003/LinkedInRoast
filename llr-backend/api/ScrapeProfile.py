@@ -7,7 +7,12 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from config.config import LINKEDIN_USERNAME, LINKEDIN_PASSWORD
 
-api = Linkedin(LINKEDIN_USERNAME, LINKEDIN_PASSWORD)
+try:
+    api = Linkedin(LINKEDIN_USERNAME, LINKEDIN_PASSWORD)
+except Exception as e:
+    print(f"Error: {e}")
+    print("Please check your LinkedIn credentials in config/config.py file.")
+
 
 def get_filtered_profile(username):
 
