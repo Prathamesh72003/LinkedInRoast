@@ -1,101 +1,109 @@
 import os
 import sys
-import requests
+from linkedin_api import Linkedin
+import json
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
+from config.config import LINKEDIN_USERNAME, LINKEDIN_PASSWORD
 
-from config.config import API_ENDPOINT, HEADERS
+api = Linkedin(LINKEDIN_USERNAME, LINKEDIN_PASSWORD)
 
-def get_linkedin_profile(linkedin_url):
+def get_filtered_profile(username):
 
-    params = {
-        'linkedin_profile_url': linkedin_url,
-        'extra': 'include',
-        'skills': 'include',
-        'use_cache': 'if-present',
-        'fallback_to_cache': 'on-error',
-    }
-    response = requests.get(API_ENDPOINT, params=params, headers=HEADERS)
+    profile = api.get_profile(username)
 
-    if response.status_code == 200:
-        profile_data = response.json()
-        formatted_profile = format_profile_for_llm(profile_data)
-        return formatted_profile
-    else:
-        return {"error": f"Failed to fetch profile: {response.status_code}"}
+    def safe_get(data, keys, default=None):
+        for key in keys:
+            if isinstance(data, dict) and key in data:
+                data = data[key]
+            else:
+                return default
+        return data
 
-def format_profile_for_llm(profile):
-    formatted_data = {
-        "full_name": f"{profile.get('first_name')} {profile.get('last_name')}",
-        "headline": profile.get('headline'),
-        "occupation": profile.get('occupation'),
-        "summary": profile.get('summary'),
-        "location": f"{profile.get('city')}, {profile.get('state')}, {profile.get('country_full_name')}",
-        "connections": profile.get('connections'),
-        "profile_pic_url": profile.get('profile_pic_url'),
-        "background_cover_image_url": profile.get('background_cover_image_url'),
+    filtered_profile = {
+        "name": f"{safe_get(profile, ['firstName'], '')} {safe_get(profile, ['lastName'], '')}".strip(),
+        "summary": safe_get(profile, ['summary']),
+        "headline": safe_get(profile, ['headline']),
+        "location": {
+            "city": safe_get(profile, ['geoLocationName']),
+            "country": safe_get(profile, ['geoCountryName']),
+        },
         "education": [
             {
-                "degree": edu.get('degree_name'),
-                "field_of_study": edu.get('field_of_study'),
-                "school": edu.get('school'),
-                "starts_at": edu.get('starts_at'),
-                "ends_at": edu.get('ends_at'),
-                "school_linkedin_profile_url": edu.get('school_linkedin_profile_url')
+                "schoolName": safe_get(edu, ['schoolName']),
+                "degreeName": safe_get(edu, ['degreeName']),
+                "fieldOfStudy": safe_get(edu, ['fieldOfStudy']),
+                "startYear": safe_get(edu, ['timePeriod','startDate', 'year']),
+                "endYear": safe_get(edu, ['timePeriod', 'endDate', 'year']),
             }
-            for edu in profile.get('education', [])
+            for edu in safe_get(profile, ['education'], [])
         ],
-        "experiences": [
+        "experience": [
             {
-                "title": exp.get('title'),
-                "company": exp.get('company'),
-                "description": exp.get('description'),
-                "starts_at": exp.get('starts_at'),
-                "ends_at": exp.get('ends_at'),
-                "location": exp.get('location'),
-                "company_linkedin_profile_url": exp.get('company_linkedin_profile_url')
+                "companyName": safe_get(exp, ['companyName']),
+                "title": safe_get(exp, ['title']),
+                "location": safe_get(exp, ['locationName']),
+                "startDate": {
+                    "month": safe_get(exp, ['timePeriod', 'startDate', 'month']),
+                    "year": safe_get(exp, ['timePeriod', 'startDate', 'year']),
+                },
+                "endDate": {
+                    "month": safe_get(exp, ['timePeriod', 'endDate', 'month']),
+                    "year": safe_get(exp, ['timePeriod', 'endDate', 'year']),
+                },
+                "description": safe_get(exp, ['description']),
             }
-            for exp in profile.get('experiences', [])
+            for exp in safe_get(profile, ['experience'], [])
+        ],
+        "skills": [safe_get(skill, ['name']) for skill in safe_get(profile, ['skills'], [])],
+        "languages": [
+            {
+                "name": safe_get(lang, ['name']),
+                "proficiency": safe_get(lang, ['proficiency']),
+            }
+            for lang in safe_get(profile, ['languages'], [])
         ],
         "certifications": [
             {
-                "name": cert.get('name'),
-                "authority": cert.get('authority'),
-                "starts_at": cert.get('starts_at'),
-                "ends_at": cert.get('ends_at'),
-                "url": cert.get('url')
+                "name": safe_get(cert, ['name']),
+                "authority": safe_get(cert, ['authority']),
+                "licenseNumber": safe_get(cert, ['licenseNumber']),
+                "url": safe_get(cert, ['url']),
+                "startDate": {
+                    "month": safe_get(cert, ['timePeriod','startDate', 'month']),
+                    "year": safe_get(cert, ['timePeriod','startDate', 'year']),
+                },
             }
-            for cert in profile.get('certifications', [])
+            for cert in safe_get(profile, ['certifications'], [])
         ],
-        "projects": [
-            {
-                "title": proj.get('title'),
-                "description": proj.get('description'),
-                "url": proj.get('url'),
-                "starts_at": proj.get('starts_at'),
-                "ends_at": proj.get('ends_at'),
-            }
-            for proj in profile.get('accomplishment_projects', [])
-        ],
-        "recommendations": profile.get('recommendations', []),
-        "activities": [
-            {
-                "title": act.get('title'),
-                "link": act.get('link'),
-                "status": act.get('activity_status'),
-            }
-            for act in profile.get('activities', [])
-        ],
-        "similar_profiles": [
-            {
-                "name": sim.get('name'),
-                "link": sim.get('link'),
-                "location": sim.get('location'),
-                "summary": sim.get('summary'),
-            }
-            for sim in profile.get('similarly_named_profiles', [])
-        ],
-        "volunteer_work": profile.get('volunteer_work', [])
+       "volunteer":[
+           {
+                "organization": safe_get(vol, ['companyName']),
+                "role": safe_get(vol, ['role']),
+                "startDate": {
+                     "month": safe_get(vol, ['timePeriod', 'startDate', 'month']),
+                     "year": safe_get(vol, ['timePeriod', 'startDate', 'year']),
+                },
+                "endDate": {
+                     "month": safe_get(vol, ['timePeriod', 'endDate', 'month']),
+                     "year": safe_get(vol, ['timePeriod', 'endDate', 'year']),
+                },
+                "description": safe_get(vol, ['description']),
+           }
+           for vol in safe_get(profile, ['volunteer'], [])
+       ]
     }
-    return formatted_data
+
+    formatted_profile = json.dumps(filtered_profile, indent=4)
+    return formatted_profile
+
+def get_linkedin_profile(linkedin_url):
+    linkedin_url = str(linkedin_url).strip()
+    username = linkedin_url.rstrip('/').split('/')[-1]
+    try:
+        formatted_profile = get_filtered_profile(username)
+        return formatted_profile
+    except Exception as e:
+        return {"error": str(e)}
+

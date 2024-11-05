@@ -86,10 +86,10 @@ export default function RoastRoom() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a1b2e] to-[#0d0e1b] text-white p-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#1a1b2e] to-[#0d0e1b] text-white p-4 sm:p-6 md:p-8">
       <div className="max-w-4xl mx-auto">
         <motion.h1 
-          className="text-6xl font-bold text-center mb-8"
+          className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-4 sm:mb-6 md:mb-8"
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -97,7 +97,7 @@ export default function RoastRoom() {
           Link<span className="text-[#4ECDC4]">Burn</span>
         </motion.h1>
         <motion.p 
-          className="text-xl text-center mb-12 text-gray-300"
+          className="text-lg sm:text-xl text-center mb-8 sm:mb-10 md:mb-12 text-gray-300"
           initial={{ y: -30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -111,21 +111,21 @@ export default function RoastRoom() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+              className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 p-4"
             >
-              <div className="bg-white text-[#0d0e1b] p-8 rounded-lg shadow-lg w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-4">Consent Form</h2>
-                <p className="mb-4">
+              <div className="bg-white text-[#0d0e1b] p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-md">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4">Consent Form</h2>
+                <p className="mb-4 text-sm sm:text-base">
                   Welcome to LinkBurn! Before we proceed, please understand that this site is meant for entertainment purposes only. The roasts generated are not to be taken seriously or personally. By clicking &apos;I Agree&apos;, you acknowledge that:
                 </p>
-                <ul className="list-disc pl-5 mb-6">
+                <ul className="list-disc pl-5 mb-6 text-sm sm:text-base">
                   <li>The content is purely for fun and humor</li>
                   <li>You will not take offense to any roasts generated</li>
                   <li>You understand this is not a platform for cyberbullying or harassment</li>
                 </ul>
                 <Button
                   onClick={() => setConsentGiven(true)}
-                  className="w-full bg-[#4ECDC4] hover:bg-[#3DBDB3] text-[#0d0e1b] font-bold py-3 text-lg rounded-full"
+                  className="w-full bg-[#4ECDC4] hover:bg-[#3DBDB3] text-[#0d0e1b] font-bold py-2 sm:py-3 text-base sm:text-lg rounded-full"
                 >
                   I Agree
                 </Button>
@@ -139,9 +139,9 @@ export default function RoastRoom() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-lg shadow-lg"
+            className="bg-white bg-opacity-10 backdrop-blur-md p-4 sm:p-6 md:p-8 rounded-lg shadow-lg"
           >
-            <div className="mb-6">
+            <div className="mb-4 sm:mb-6">
               <label htmlFor="linkedin-url" className="block text-sm font-medium text-gray-300 mb-2">
                 LinkedIn Profile URL
               </label>
@@ -154,7 +154,7 @@ export default function RoastRoom() {
                 className="w-full p-3 bg-white bg-opacity-20 text-white rounded-lg border-2 border-[#4ECDC4] focus:border-[#3DBDB3] focus:ring-[#3DBDB3] transition-colors"
               />
             </div>
-            <div className="mb-8">
+            <div className="mb-6 sm:mb-8">
               <label htmlFor="brutality-slider" className="block text-sm font-medium text-gray-300 mb-2">
                 Brutality Level: {brutalityLevel}
               </label>
@@ -167,17 +167,17 @@ export default function RoastRoom() {
                 onValueChange={handleBrutalityChange}
                 className="w-full"
               />
-              <div className="flex justify-between text-xs text-gray-400 mt-2">
-                <span className="flex items-center"><ThermometerSun className="mr-1" /> Mild</span>
-                <span className="flex items-center"><Flame className="mr-1" /> Medium</span>
-                <span className="flex items-center"><Zap className="mr-1" /> Spicy</span>
+              <div className="flex flex-wrap justify-between text-xs text-gray-400 mt-2">
+                <span className="flex items-center mb-1 sm:mb-0"><ThermometerSun className="mr-1" /> Mild</span>
+                <span className="flex items-center mb-1 sm:mb-0"><Flame className="mr-1" /> Medium</span>
+                <span className="flex items-center mb-1 sm:mb-0"><Zap className="mr-1" /> Spicy</span>
                 <span className="flex items-center"><Skull className="mr-1" /> Nuclear</span>
               </div>
             </div>
             <Button
               onClick={handleSubmit}
               disabled={!isUrlValid || isLoading}
-              className="w-full bg-[#4ECDC4] hover:bg-[#3DBDB3] text-[#0d0e1b] font-bold py-3 text-lg rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-full bg-[#4ECDC4] hover:bg-[#3DBDB3] text-[#0d0e1b] font-bold py-2 sm:py-3 text-base sm:text-lg rounded-full disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isLoading ? 'Roasting...' : 'Get Roasted'}
             </Button>
@@ -190,10 +190,10 @@ export default function RoastRoom() {
               initial={{ opacity: 0, y: -50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -50 }}
-              className="mt-8 bg-white bg-opacity-20 backdrop-blur-lg text-white p-6 rounded-lg shadow-lg border-2 border-[#4ECDC4]"
+              className="mt-6 sm:mt-8 bg-white bg-opacity-20 backdrop-blur-lg text-white p-4 sm:p-6 rounded-lg shadow-lg border-2 border-[#4ECDC4]"
             >
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-2xl font-bold text-[#4ECDC4]">Enjoy Your Roast</h3>
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
+                <h3 className="text-xl sm:text-2xl font-bold text-[#4ECDC4] mb-2 sm:mb-0">Enjoy Your Roast</h3>
                 <div className="flex space-x-2">
                   <Button
                     onClick={copyToClipboard}
@@ -201,7 +201,7 @@ export default function RoastRoom() {
                     size="icon"
                     className="text-white hover:bg-[#4ECDC4] hover:text-[#0d0e1b] rounded-full transition-colors"
                   >
-                    {isCopied ? <Check className="h-6 w-6" /> : <Copy className="h-6 w-6" />}
+                    {isCopied ? <Check className="h-5 w-5 sm:h-6 sm:w-6" /> : <Copy className="h-5 w-5 sm:h-6 sm:w-6" />}
                   </Button>
                   <Button
                     onClick={() => setRoastResponse('')}
@@ -209,13 +209,13 @@ export default function RoastRoom() {
                     size="icon"
                     className="text-white hover:bg-[#4ECDC4] hover:text-[#0d0e1b] rounded-full transition-colors"
                   >
-                    <X className="h-6 w-6" />
+                    <X className="h-5 w-5 sm:h-6 sm:w-6" />
                   </Button>
                 </div>
               </div>
-              <div className="max-h-[300px] overflow-y-auto scrollbar-hide">
+              <div className="max-h-[200px] sm:max-h-[300px] overflow-y-auto scrollbar-hide">
                 {roastResponse.split('\n\n').map((paragraph, index) => (
-                  <p key={index} className="mb-4 text-lg leading-relaxed">
+                  <p key={index} className="mb-4 text-base sm:text-lg leading-relaxed">
                     {paragraph}
                   </p>
                 ))}
