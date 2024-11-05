@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { X } from 'lucide-react'
+import { X, Copy, Check } from 'lucide-react'
+import { useToast } from "@/hooks/use-toast"
 
 export default function RoastRoom() {
   const [consentGiven, setConsentGiven] = useState(false)
@@ -12,6 +13,9 @@ export default function RoastRoom() {
   const [isUrlValid, setIsUrlValid] = useState(false)
   const [roastResponse, setRoastResponse] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isCopied, setIsCopied] = useState(false)
+
+  const { toast } = useToast()
 
   const validateLinkedInUrl = (url: string) => {
     const regex = /^https:\/\/[a-z]{2,3}\.linkedin\.com\/in\/[\w\-]+\/?$/i
@@ -41,11 +45,30 @@ export default function RoastRoom() {
         throw new Error(data.detail || 'Error fetching roast');
       }
       setRoastResponse(data.roast);
-      } catch (error) {
+    } catch (error) {
       console.error('Error fetching roast:', error);
       setRoastResponse('An error occurred while fetching your roast. Please try again.');
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(roastResponse);
+      setIsCopied(true);
+      toast({
+        title: "Copied to clipboard",
+        description: "Your roast has been copied to the clipboard.",
+      })
+      setTimeout(() => setIsCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+      toast({
+        title: "Failed to copy",
+        description: "An error occurred while copying the text.",
+        variant: "destructive",
+      })
     }
   }
 
@@ -118,14 +141,24 @@ export default function RoastRoom() {
           >
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-2xl font-bold text-center text-blue-300">Enjoy Your Roast</h3>
-              <Button
-                onClick={() => setRoastResponse('')}
-                variant="ghost"
-                size="icon"
-                className="text-[#0d0e1b] hover:bg-[#4ECDC4] hover:text-white rounded-full"
-              >
-                <X className="h-6 w-6" />
-              </Button>
+              <div className="flex space-x-2">
+                <Button
+                  onClick={copyToClipboard}
+                  variant="ghost"
+                  size="icon"
+                  className="text-[#0d0e1b] hover:bg-[#4ECDC4] hover:text-white rounded-full"
+                >
+                  {isCopied ? <Check className="h-6 w-6" /> : <Copy className="h-6 w-6" />}
+                </Button>
+                <Button
+                  onClick={() => setRoastResponse('')}
+                  variant="ghost"
+                  size="icon"
+                  className="text-[#0d0e1b] hover:bg-[#4ECDC4] hover:text-white rounded-full"
+                >
+                  <X className="h-6 w-6" />
+                </Button>
+              </div>
             </div>
             <div className="max-h-[300px] overflow-y-auto scrollbar-hide text-white">
               {roastResponse.split('\n\n').map((paragraph, index) => (
@@ -137,7 +170,6 @@ export default function RoastRoom() {
           </motion.div>
         )}
       </AnimatePresence>
-
     </div>
   )
 }
